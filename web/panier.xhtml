@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+
+    <h:outputStylesheet library="css" name="sty.css"/>
+</h:head>
+
+<h:body>
+
+<h1>Top Commerce</h1>
+
+    <p:growl id="growl" showDetail="false"/>
+    <h:outputLabel styleClass="pagetitle" value="Panier" id="titre"/>
+
+    <p:dataTable id="data" emptyMessage="Pas d'articles trouvés" value="#{panierService.panier.commande.ligneCommandeList}" var="lc"
+                 styleClass="centeredColumnContent">
+
+        <p:column headerText="Catégorie">
+            <h:outputText value="#{lc.produit.categorie.libelle}"/>
+        </p:column>
+
+        <p:column headerText="Modèle">
+            <h:outputText value="#{lc.produit.modele}"/>
+        </p:column>
+
+        <p:column headerText="Marque">
+            <h:outputText value="#{lc.produit.marque}"/>
+        </p:column>
+
+        <p:column headerText="Descrtiptif">
+            <h:outputText value="#{lc.produit.descriptif}"/>
+        </p:column>
+
+        <p:column headerText="Qte">
+            <h:outputLabel value="#{lc.produit.quantite}"/>
+        </p:column>
+
+        <p:column headerText="Prix">
+            <h:outputText value="#{lc.produit.prix}"/>
+        </p:column>
+
+        <p:column headerText="Prix ligne" rendered="#{panierService.commande}">
+            <h:outputText value="#{lc.computeTotalLigne()}"/>
+        </p:column>
+
+    </p:dataTable>
+
+    <h:outputText id="price" value="Le prix total#{panierService.commande?' de la commande':' du panier'} est de #{panierService.panier.commande.totalCommande}"/> euros
+
+    <h:form id="form1">
+        <div class="ui-g">
+
+            <div class="ui-g-5"/>
+
+            <div class="ui-g-3">
+                <p:commandButton id="cmd" value="Valider la commande" rendered="#{!panierService.commande}" action="#{panierService.validerCommande}" update="titre,data,growl,price,form1"/>
+            </div>
+
+            <div class="ui-g-4"/>
+
+        </div>
+
+        <p:commandLink value="retour à la sélection" action="selection?faces-redirect=true"/>
+
+    </h:form>
+
+</h:body>
+.
+</html>
